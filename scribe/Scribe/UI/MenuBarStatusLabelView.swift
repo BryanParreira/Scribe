@@ -12,20 +12,10 @@ struct MenuBarStatusLabelView: View {
     @ObservedObject var suggestionSettings: SuggestionSettingsModel
 
     var body: some View {
-        HStack(spacing: 2) {
-            Image("MenuBarCatIcon")
-                .renderingMode(.template)
-                .resizable()
-                .scaledToFit()
-                .frame(height: 16)
-
-            if suggestionSettings.isMenuBarWordCountVisible,
-               let label = WordCountFormatter.compactLabel(
-                   for: suggestionCoordinator.totalTabAcceptedWordCount
-               ) {
-                Text(label)
-                    .font(.system(size: 10, weight: .medium).monospacedDigit())
-            }
-        }
+        Image("MenuBarCatIcon")
+            .renderingMode(.template)
+            .resizable()
+            .scaledToFit()
+            .frame(height: 16)
     }
 }
