@@ -1,0 +1,41 @@
+# Xcode
+*.xcuserstate
+xcuserdata/
+*.xcworkspace/xcuserdata/
+DerivedData/
+build/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Local signing (per-developer Apple team id; written by scripts/dev-setup.sh)
+Signing.local.xcconfig
+
+# Swift Package Manager
+.build/
+.swiftpm/
+**/xcshareddata/swiftpm/Package.resolved
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Python virtual environments
+.venv/
+.venv-*/
+venv/
+
+# Personal notes
+launch.txt
+posts.txt
+.writing/
+
+# Claude Code
+.claude/worktrees/
+
+# Large model files — keep out of git
+*.gguf
+*.bin
+.rocketride/
