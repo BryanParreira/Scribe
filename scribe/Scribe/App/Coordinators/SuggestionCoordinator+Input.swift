@@ -196,6 +196,13 @@ extension SuggestionCoordinator {
         }
 
         if event.shouldSchedulePrediction {
+            // Track inter-keystroke timing for adaptive debounce. Measured at tap time (before
+            // the host-publish wait) so it reflects real user pacing, not scheduling artifacts.
+            let nowNs = DispatchTime.now().uptimeNanoseconds
+            if lastInputTimestampNs > 0 {
+                lastInterKeystrokeMs = Int((nowNs &- lastInputTimestampNs) / 1_000_000)
+            }
+            lastInputTimestampNs = nowNs
             // Same Chromium AX-publish race as the with-session paths below: the CGEvent tap runs
             // *before* the host app processes the keystroke, so a synchronous `refreshNow()` here
             // reads pre-keystroke text and feeds it into generation. The result is a suggestion

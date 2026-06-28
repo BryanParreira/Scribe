@@ -28,6 +28,8 @@ enum BaseCompletionPromptRenderer {
         clipboardContext: String? = nil,
         visualContextSummary: String? = nil,
         surfaceContext: SurfaceContext? = nil,
+        suffixText: String? = nil,
+        recentPhrases: [String] = [],
         contextBudget: Int = defaultContextBudget,
         tokenBudget: Int? = nil
     ) -> String {
@@ -69,6 +71,29 @@ enum BaseCompletionPromptRenderer {
         }
         if let screen = Self.nonEmpty(visualContextSummary) {
             sections.append(Self.contextSection("screen", "Nearby on screen: \(screen)", priority: 30, maxChars: 500))
+        }
+        // Suffix context: text that already exists after the caret. Only injected when the caret is
+        // at a line boundary (suffix starts with a newline), which is the case where a base model can
+        // safely use it as a target to continue toward. Mid-sentence suffix is skipped — a base
+        // continuer might echo it instead of bridging to it.
+        if let suffix = Self.nonEmpty(suffixText),
+           suffix.hasPrefix("\n") || suffix.hasPrefix("\r") {
+            sections.append(
+                Self.contextSection(
+                    "upcoming",
+                    "Upcoming text: \(suffix.trimmingCharacters(in: .newlines))",
+                    priority: 25,
+                    maxChars: 280
+                )
+            )
+        }
+        // Recent accepted phrases: few-shot voice conditioning. Injected last in the preface so a
+        // large prefix can crowd them out (voice signal is nice-to-have; factual context wins).
+        if !recentPhrases.isEmpty {
+            let sample = recentPhrases.prefix(3).map { "\"\($0)\"" }.joined(separator: ", ")
+            sections.append(
+                Self.contextSection("style_samples", "Recent writing: \(sample)", priority: 20, maxChars: 400)
+            )
         }
         // The caret prefix: top priority so it is never starved, kept by its END (the text nearest
         // the caret), and rendered last with no label so the model continues from where the user

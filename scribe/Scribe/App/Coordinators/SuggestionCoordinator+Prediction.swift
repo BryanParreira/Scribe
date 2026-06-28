@@ -28,6 +28,7 @@ extension SuggestionCoordinator {
         // is the fallback until a first latency exists.
         let debounceMilliseconds = DebouncePolicy.milliseconds(
             lastGenerationLatencyMilliseconds: latestLatencyMilliseconds,
+            interKeystrokeMilliseconds: lastInterKeystrokeMs,
             fallback: settingsSnapshot.debounceMilliseconds
         )
         // The debounce clock starts at the keystroke, not here. The host-publish poll has already
@@ -117,7 +118,8 @@ extension SuggestionCoordinator {
             settings: settingsSnapshot,
             configuration: configuration,
             clipboardContext: clipboardContext,
-            visualContextSummary: visualContextSummary
+            visualContextSummary: visualContextSummary,
+            recentAcceptedPhrases: recentPhraseSampler.recentPhrases
         )
         latestGenerationNumber = context.generation
         latestPromptPreview = requestBuildResult.promptPreview
@@ -237,7 +239,8 @@ extension SuggestionCoordinator {
             settings: settingsSnapshot,
             configuration: configuration,
             clipboardContext: clipboardContext,
-            visualContextSummary: visualContextSummary
+            visualContextSummary: visualContextSummary,
+            recentAcceptedPhrases: recentPhraseSampler.recentPhrases
         )
         latestGenerationNumber = context.generation
         latestPromptPreview = requestBuildResult.promptPreview

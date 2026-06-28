@@ -126,6 +126,7 @@ extension SuggestionCoordinator {
 
         deferAcceptanceBookkeeping { [weak self] in
             self?.recordAcceptedWords(from: acceptedChunk)
+            self?.recentPhraseSampler.record(acceptedChunk)
             self?.recordSuggestionAcceptedIfFirstChunk(of: sessionForAcceptance)
         }
 

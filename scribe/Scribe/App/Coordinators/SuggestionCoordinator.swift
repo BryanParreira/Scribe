@@ -166,6 +166,17 @@ final class SuggestionCoordinator: ObservableObject {
     /// stalling. Bounded to a single queued accept so mashing Tab cannot run away.
     var hasQueuedPostExhaustionAccept = false
 
+    /// Uptime nanoseconds of the last input event that triggered a prediction schedule.
+    /// Used to compute the inter-keystroke interval for adaptive debounce.
+    var lastInputTimestampNs: UInt64 = 0
+    /// Milliseconds between the two most recent prediction-triggering keystrokes.
+    /// Nil until the second keystroke arrives so the first press uses the fallback debounce.
+    var lastInterKeystrokeMs: Int?
+
+    /// Ring buffer of recently accepted completion phrases, persisted across sessions.
+    /// Injected into the prompt as few-shot style conditioning (see `RecentPhraseSampler`).
+    var recentPhraseSampler: RecentPhraseSampler
+
     init(
         permissionManager: any SuggestionPermissionProviding,
         focusModel: any SuggestionFocusProviding,
@@ -207,6 +218,7 @@ final class SuggestionCoordinator: ObservableObject {
         self.spellingLanguageResolver = spellingLanguageResolver
         self.qualityMetricsStore = qualityMetricsStore
         self.userDefaults = userDefaults
+        recentPhraseSampler = RecentPhraseSampler(userDefaults: userDefaults)
         settingsSnapshot = suggestionSettings.snapshot
         // These collaborators isolate "how overlay/logging works" from "when the coordinator
         // wants to show state," which keeps the coordinator closer to orchestration code.

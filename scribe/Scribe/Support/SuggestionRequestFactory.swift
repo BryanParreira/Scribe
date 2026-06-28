@@ -34,12 +34,19 @@ enum SuggestionRequestFactory {
         settings: SuggestionSettingsSnapshot,
         configuration: SuggestionConfiguration,
         clipboardContext: String? = nil,
-        visualContextSummary: String? = nil
+        visualContextSummary: String? = nil,
+        recentAcceptedPhrases: [String] = []
     ) -> SuggestionRequestBuildResult {
+        let fieldType = FieldTypeClassifier.classify(
+            role: context.role,
+            subrole: context.subrole,
+            inputFrameRect: context.inputFrameRect
+        )
         let prefixText = truncatedPromptPrefix(
             from: context.precedingText,
             configuration: configuration,
-            engine: settings.selectedEngine
+            engine: settings.selectedEngine,
+            fieldType: fieldType
         )
         let completionLengthInstruction = settings.effectiveWordRange.promptInstruction
         let userName = activeUserName(settings: settings)
@@ -86,6 +93,14 @@ enum SuggestionRequestFactory {
         // Custom instructions and persona condition the output rather than being obeyed. The
         // Foundation Models path builds its own messages from these same request fields, so this
         // prompt string is only consumed by the llama engine.
+        // Suffix context: the text that already exists after the caret.
+        // Bounded to maxSuffixCharacters; the renderer only injects it when the suffix starts with
+        // a newline (caret at end of line), so mid-sentence trailing text is never sent to the model.
+        let activeSuffixText: String? = {
+            let raw = String(context.trailingText.prefix(configuration.maxSuffixCharacters))
+            return raw.isEmpty ? nil : raw
+        }()
+
         let prompt = BaseCompletionPromptRenderer.prompt(
             prefixText: prefixText,
             applicationName: context.applicationName,
@@ -96,20 +111,25 @@ enum SuggestionRequestFactory {
             clipboardContext: boundedClipboardContext,
             visualContextSummary: boundedVisualContextSummary,
             surfaceContext: surfaceContext,
+            suffixText: activeSuffixText,
+            recentPhrases: recentAcceptedPhrases,
             tokenBudget: configuration.llamaPromptTokenBudget
         )
+
+        let rawTokenBudget = activeMaxPredictionTokens(
+            configuration: configuration,
+            wordRange: settings.effectiveWordRange,
+            responseLanguages: settings.responseLanguages,
+            isMultiLineEnabled: settings.isMultiLineEnabled
+        )
+        let cappedTokenBudget = FieldTypeClassifier.cappedMaxPredictionTokens(rawTokenBudget, for: fieldType)
 
         let request = SuggestionRequest(
             context: context,
             prefixText: prefixText,
             prompt: prompt,
             generation: context.generation,
-            maxPredictionTokens: activeMaxPredictionTokens(
-                configuration: configuration,
-                wordRange: settings.effectiveWordRange,
-                responseLanguages: settings.responseLanguages,
-                isMultiLineEnabled: settings.isMultiLineEnabled
-            ),
+            maxPredictionTokens: cappedTokenBudget,
             temperature: configuration.temperature,
             topK: configuration.topK,
             topP: configuration.topP,
@@ -125,6 +145,7 @@ enum SuggestionRequestFactory {
             clipboardContext: boundedClipboardContext,
             visualContextSummary: boundedVisualContextSummary,
             surfaceContext: surfaceContext,
+            recentAcceptedPhrases: recentAcceptedPhrases,
             isMultiLineEnabled: settings.isMultiLineEnabled,
             requestID: RequestID.generate()
         )
@@ -145,18 +166,21 @@ enum SuggestionRequestFactory {
     static func truncatedPromptPrefix(
         from precedingText: String,
         configuration: SuggestionConfiguration,
-        engine: SuggestionEngineKind = .llamaOpenSource
+        engine: SuggestionEngineKind = .llamaOpenSource,
+        fieldType: FieldType = .multiLine
     ) -> String {
-        let maxCharacters: Int
-        let maxWords: Int
+        let rawMaxCharacters: Int
+        let rawMaxWords: Int
         switch engine {
         case .appleIntelligence:
-            maxCharacters = configuration.maxPrefixCharactersFoundationModel
-            maxWords = configuration.maxPrefixWordsFoundationModel
+            rawMaxCharacters = configuration.maxPrefixCharactersFoundationModel
+            rawMaxWords = configuration.maxPrefixWordsFoundationModel
         case .llamaOpenSource:
-            maxCharacters = configuration.maxPrefixCharacters
-            maxWords = configuration.maxPrefixWords
+            rawMaxCharacters = configuration.maxPrefixCharacters
+            rawMaxWords = configuration.maxPrefixWords
         }
+        let maxCharacters = FieldTypeClassifier.cappedMaxPrefixCharacters(rawMaxCharacters, for: fieldType)
+        let maxWords = FieldTypeClassifier.cappedMaxPrefixWords(rawMaxWords, for: fieldType)
 
         let characterWindow = String(precedingText.suffix(maxCharacters))
         // Split to measure word count. SubStrings retain their indices into characterWindow,

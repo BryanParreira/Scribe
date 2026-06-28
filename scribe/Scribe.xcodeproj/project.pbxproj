@@ -513,6 +513,8 @@
 		B782EC08B7516791BDB21172 /* FieldStyleCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FBF2B766E728F25899B64E /* FieldStyleCache.swift */; };
 		B7A98BC225304E4DFED9E622 /* OnboardingTemplateRecommender.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA878B447441BB4F3E327CC8 /* OnboardingTemplateRecommender.swift */; };
 		B816C6191738AB616F2E8D2D /* SuggestionCoordinatorTestSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C174D8294858BF9DF3D361D /* SuggestionCoordinatorTestSupport.swift */; };
+		8CDDF19EF0204893BA2775F3 /* FieldTypeClassifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035E7D7532794A29AB458A5F /* FieldTypeClassifier.swift */; };
+		F08EF78070C845E5A4BD5F38 /* RecentPhraseSampler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DBFA66EDAC4F668587C9A0 /* RecentPhraseSampler.swift */; };
 		B849D68E0474CECAE809881C /* DebouncePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC17643448271DE5DE61A89 /* DebouncePolicy.swift */; };
 		B909A118616C0C47AAB6039A /* SpeculativeAcceptanceContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB66904C35A7D8BEF5D2A5 /* SpeculativeAcceptanceContext.swift */; };
 		B93AB7E845086F6FBB068369 /* SuggestionRequestFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE94342B888A5A2CCF66BC93 /* SuggestionRequestFactoryTests.swift */; };
@@ -621,6 +623,8 @@
 		E311B80968761E90FBA19A8A /* TypoGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8412FE2BAC406421248A03B /* TypoGate.swift */; };
 		E313639E71AE1374D2B9A956 /* SuggestionWorkController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B2D97BAA3618A7D0357AC44 /* SuggestionWorkController.swift */; };
 		E38801433B99E65BD7E45A0E /* LlamaPromptCacheHintTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA88BB29BC8727878C99E95 /* LlamaPromptCacheHintTrackerTests.swift */; };
+		FBE0E39E8BD441EC917DAFD4 /* FieldTypeClassifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035E7D7532794A29AB458A5F /* FieldTypeClassifier.swift */; };
+		9C0A4B4A21D74F42A1B9EA85 /* RecentPhraseSampler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DBFA66EDAC4F668587C9A0 /* RecentPhraseSampler.swift */; };
 		E3C0326597083762BA6D76CA /* DebouncePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC17643448271DE5DE61A89 /* DebouncePolicy.swift */; };
 		E3CAAEFAAB5BB24CEE16445B /* LLMIOFileHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D610FCA3A97249DCCE7D0B8 /* LLMIOFileHandler.swift */; };
 		E4382BEA8A8551612E5966B9 /* BaseCompletionPromptRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EF79E6144D6C6AD062B569 /* BaseCompletionPromptRenderer.swift */; };
@@ -863,6 +867,8 @@
 		6CF1FBAABEF545B620AF8D78 /* ru-100k.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "ru-100k.txt"; sourceTree = "<group>"; };
 		6D4C1EF008B9DFA753D561D3 /* LlamaEvalScoringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LlamaEvalScoringTests.swift; sourceTree = "<group>"; };
 		6DB982BF30B3601F57277776 /* fr-100k.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "fr-100k.txt"; sourceTree = "<group>"; };
+		035E7D7532794A29AB458A5F /* FieldTypeClassifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldTypeClassifier.swift; sourceTree = "<group>"; };
+		43DBFA66EDAC4F668587C9A0 /* RecentPhraseSampler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentPhraseSampler.swift; sourceTree = "<group>"; };
 		6DC17643448271DE5DE61A89 /* DebouncePolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebouncePolicy.swift; sourceTree = "<group>"; };
 		6DC693E00430F46E41CB56E6 /* RequestID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestID.swift; sourceTree = "<group>"; };
 		6E3B1232C4BE8072A5183F9C /* SymSpell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymSpell.swift; sourceTree = "<group>"; };
@@ -1727,6 +1733,8 @@
 				9CC2D6472ACD377FD73A5801 /* ControlTokenMarkers.swift */,
 				C7B2D34A6F3AC9DFD61350F7 /* JotDebugOptions.swift */,
 				247561C626843957CFB4B632 /* CurrentWordExtractor.swift */,
+				035E7D7532794A29AB458A5F /* FieldTypeClassifier.swift */,
+				43DBFA66EDAC4F668587C9A0 /* RecentPhraseSampler.swift */,
 				6DC17643448271DE5DE61A89 /* DebouncePolicy.swift */,
 				D12ABBCE23A946C22894945B /* DecodeStopPolicy.swift */,
 				29ED42C4BDD0C521101AF95E /* DeviceInfo.swift */,
@@ -2049,6 +2057,8 @@
 				55D4E6FB63E3475749E61EB3 /* CustomRulesCatalog.swift in Sources */,
 				F7237FDB0665465F1C7EDCDE /* CustomRulesEditor.swift in Sources */,
 				E0DAB3CDE782C330AF21FC0D /* DateMacroEvaluator.swift in Sources */,
+				FBE0E39E8BD441EC917DAFD4 /* FieldTypeClassifier.swift in Sources */,
+				9C0A4B4A21D74F42A1B9EA85 /* RecentPhraseSampler.swift in Sources */,
 				E3C0326597083762BA6D76CA /* DebouncePolicy.swift in Sources */,
 				FA25762161F068F59BEC86EB /* DecodeStopPolicy.swift in Sources */,
 				400E1A5145FC8C5BA2FAED0A /* DeepGeometryWalkThrottle.swift in Sources */,
@@ -2296,6 +2306,8 @@
 				0431AE1DBEE36C90C7F39C19 /* CustomRulesCatalog.swift in Sources */,
 				4B4DDB569CAD806F765224DE /* CustomRulesEditor.swift in Sources */,
 				DAD77998F793468D4D64B705 /* DateMacroEvaluator.swift in Sources */,
+				8CDDF19EF0204893BA2775F3 /* FieldTypeClassifier.swift in Sources */,
+				F08EF78070C845E5A4BD5F38 /* RecentPhraseSampler.swift in Sources */,
 				B849D68E0474CECAE809881C /* DebouncePolicy.swift in Sources */,
 				586B36CD813E1432D0AB1380 /* DecodeStopPolicy.swift in Sources */,
 				261FA692D19C48E53D6999BC /* DeepGeometryWalkThrottle.swift in Sources */,
@@ -2672,7 +2684,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 6;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -2685,7 +2697,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(COTABBY_DEV_BUNDLE_ID:default=com.bryanbernardo.jot.dev)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -2711,7 +2723,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 6;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -2724,7 +2736,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bryanbernardo.jot;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -2749,7 +2761,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 6;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -2762,7 +2774,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(COTABBY_DEV_BUNDLE_ID:default=com.bryanbernardo.jot.dev)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -2938,7 +2950,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 6;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -2951,7 +2963,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bryanbernardo.jot;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;

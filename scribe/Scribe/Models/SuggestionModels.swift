@@ -385,6 +385,9 @@ struct SuggestionRequest: Equatable, Sendable {
     /// prompt has already folded it in; this field exists so the Foundation Models renderer can
     /// state the same sanitized facts in its own prompt shape.
     let surfaceContext: SurfaceContext?
+    /// Recently accepted completion phrases for few-shot style conditioning.
+    /// Injected into the llama prompt preface so the model generates text that sounds like this user.
+    let recentAcceptedPhrases: [String]
     /// When enabled, the normalizer keeps multiple lines instead of truncating to the first line.
     let isMultiLineEnabled: Bool
     /// Correlation ID stamped onto every log line touching this request — coordinator state
@@ -414,6 +417,7 @@ struct SuggestionRequest: Equatable, Sendable {
         clipboardContext: String?,
         visualContextSummary: String?,
         surfaceContext: SurfaceContext? = nil,
+        recentAcceptedPhrases: [String] = [],
         isMultiLineEnabled: Bool,
         requestID: String = "req_unknown"
     ) {
@@ -437,6 +441,7 @@ struct SuggestionRequest: Equatable, Sendable {
         self.clipboardContext = clipboardContext
         self.visualContextSummary = visualContextSummary
         self.surfaceContext = surfaceContext
+        self.recentAcceptedPhrases = recentAcceptedPhrases
         self.isMultiLineEnabled = isMultiLineEnabled
         self.requestID = requestID
     }
