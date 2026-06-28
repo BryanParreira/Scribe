@@ -141,6 +141,14 @@ enum SuggestionTextNormalizer {
         normalized = stripEchoPrefix(normalized, precedingText: request.context.precedingText)
         let collapsedByEcho = !beforeEchoStrip.isEmpty && normalized.isEmpty
 
+        // Mid-word echo strip: when the caret is inside a partially-typed word and the model
+        // emits the full word instead of just the remaining letters, strip the already-typed
+        // fragment. Without this, "gre" + model output "grateful for..." would leave the seam
+        // guard computing "gre"+"grateful" = "gregisteful" (unknown) and suppressing the
+        // completion entirely. After stripping: "ateful for..." → seam "gre"+"ateful" = "grateful" ✓
+        // This fires after the word-boundary echo strip so the two don't compete.
+        normalized = stripMidWordEchoPrefix(normalized, precedingText: request.context.precedingText)
+
         // Deterministic space management runs AFTER echo suppression because stripping echoed
         // words can expose a leading space (e.g. "world is" → " is"). If the preceding text
         // already ends with whitespace we strip the leading space to prevent double-spacing.
@@ -258,6 +266,31 @@ enum SuggestionTextNormalizer {
         let lastEchoedWord = suggestionWords[bestOverlap - 1]
         let afterLastEchoed = lastEchoedWord.endIndex
         return String(suggestion[afterLastEchoed...])
+    }
+
+    /// Strips the typed-word fragment from the start of a completion when the model emits the full
+    /// word instead of just the remaining suffix. Only applies when:
+    /// - the preceding text ends with a letter (caret is mid-word or at the end of a partial word),
+    /// - the completion starts with those exact letters (case-insensitive), and
+    /// - at least one more letter follows in the completion (the model produced a longer word).
+    ///
+    /// Minimum fragment length is 2 to avoid single-character false matches. The strip uses the
+    /// original casing from the completion (not from the typed fragment) so the ghost text
+    /// preserves whatever capitalisation the model chose.
+    private static func stripMidWordEchoPrefix(_ suggestion: String, precedingText: String) -> String {
+        guard let lastChar = precedingText.last, lastChar.isLetter else { return suggestion }
+
+        let typedFragment = String(precedingText.reversed().prefix(while: { $0.isLetter }).reversed())
+        guard typedFragment.count >= 2 else { return suggestion }
+
+        guard suggestion.lowercased().hasPrefix(typedFragment.lowercased()) else { return suggestion }
+
+        let afterFragment = suggestion.dropFirst(typedFragment.count)
+        // Only strip when the completion continues the word past the fragment. If the completion
+        // IS the fragment exactly, the existing echo path already handles it.
+        guard afterFragment.first?.isLetter == true else { return suggestion }
+
+        return String(afterFragment)
     }
 
     /// Section-header labels Jot's prompts use, plus close variants small models tend to

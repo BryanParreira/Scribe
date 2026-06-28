@@ -379,4 +379,79 @@ final class SuggestionTextNormalizerTests: XCTestCase {
         XCTAssertEqual(result.text, "")
         XCTAssertEqual(result.suppression, .normalizedToEmpty)
     }
+
+    // MARK: - Mid-word echo strip
+
+    func test_normalize_stripsMidWordEchoWhenModelOutputsFullWord() {
+        // User typed "gre", model outputs "grateful for your help" (full word instead of suffix).
+        // Strip "gre" → "ateful for your help" so the seam guard can check "gre"+"ateful"="grateful".
+        let request = CotabbyTestFixtures.suggestionRequest(precedingText: "I am gre")
+
+        let normalized = SuggestionTextNormalizer.normalize("grateful for your help", for: request)
+
+        XCTAssertEqual(normalized, "ateful for your help")
+    }
+
+    func test_normalize_stripsMidWordEchoCaseInsensitive() {
+        // Model capitalizes the word; strip should still work.
+        let request = CotabbyTestFixtures.suggestionRequest(precedingText: "I am gre")
+
+        let normalized = SuggestionTextNormalizer.normalize("Grateful for your help", for: request)
+
+        XCTAssertEqual(normalized, "ateful for your help")
+    }
+
+    func test_normalize_stripsMidWordEchoForCodeCompletion() {
+        // "func pre" → model outputs "presentation()" instead of "sentation()"
+        let request = CotabbyTestFixtures.suggestionRequest(precedingText: "func pre")
+
+        let normalized = SuggestionTextNormalizer.normalize("presentation()", for: request)
+
+        XCTAssertEqual(normalized, "sentation()")
+    }
+
+    func test_normalize_doesNotStripWhenCompletionIsCorrectSuffix() {
+        // Model correctly outputs only the remaining letters — no strip needed.
+        let request = CotabbyTestFixtures.suggestionRequest(precedingText: "I am gre")
+
+        let normalized = SuggestionTextNormalizer.normalize("ateful for your help", for: request)
+
+        XCTAssertEqual(normalized, "ateful for your help")
+    }
+
+    func test_normalize_doesNotStripWhenFragmentNotPrefixOfCompletion() {
+        // "gre" is not a prefix of "tomorrow" — strip must not fire.
+        let request = CotabbyTestFixtures.suggestionRequest(precedingText: "I am gre")
+
+        let normalized = SuggestionTextNormalizer.normalize("tomorrow is another day", for: request)
+
+        XCTAssertEqual(normalized, "tomorrow is another day")
+    }
+
+    func test_normalize_doesNotStripMidWordWhenPrecedingEndsWithSpace() {
+        // Caret is at a word boundary — mid-word strip must not fire.
+        let request = CotabbyTestFixtures.suggestionRequest(precedingText: "I am ")
+
+        let normalized = SuggestionTextNormalizer.normalize("grateful for your help", for: request)
+
+        XCTAssertEqual(normalized, "grateful for your help")
+    }
+
+    func test_normalize_doesNotStripSingleCharFragment() {
+        // Fragment "a" (length 1) is too short to strip safely.
+        let request = CotabbyTestFixtures.suggestionRequest(precedingText: "I a")
+
+        let normalized = SuggestionTextNormalizer.normalize("amazing result", for: request)
+
+        XCTAssertEqual(normalized, "amazing result")
+    }
+
+    func test_normalize_stripsMidWordEchoAtEndOfPartialWord_noTrailingText() {
+        // Caret at end of "pro" with nothing after — model outputs "program is ready"
+        let request = CotabbyTestFixtures.suggestionRequest(precedingText: "Run the pro")
+
+        let normalized = SuggestionTextNormalizer.normalize("program is ready", for: request)
+
+        XCTAssertEqual(normalized, "gram is ready")
+    }
 }

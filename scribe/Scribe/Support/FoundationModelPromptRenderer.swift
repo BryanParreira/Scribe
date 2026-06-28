@@ -83,14 +83,17 @@ enum FoundationModelPromptRenderer {
         return lines.joined(separator: "\n")
     }
 
-    /// The minimal demonstration set that locks in "continue, do not converse." One prose pair
-    /// covers the salutation-restart failure mode the chat-tuned model is most prone to; one code
-    /// pair establishes that code prefixes get code continuations, not English prose.
+    /// The minimal demonstration set that locks in "continue, do not converse." The prose pair
+    /// covers the salutation-restart failure mode the chat-tuned model is most prone to; the code
+    /// pair establishes that code prefixes get code continuations; the mid-word pair shows that a
+    /// partially-typed word gets only its remaining letters, not the full word repeated from the start.
     private static let continuationExampleLines: [String] = [
         "Existing text: \"I just wanted to follow up on the \"",
         "Continuation: proposal we discussed last week.",
         "Existing text: \"def total(items): return \"",
-        "Continuation: sum(item.price for item in items)"
+        "Continuation: sum(item.price for item in items)",
+        "Existing text: \"She is extr\"",
+        "Continuation: emely grateful for your help."
     ]
 
     /// The request prompt stays short and concrete.
@@ -145,6 +148,19 @@ enum FoundationModelPromptRenderer {
             sections.append("")
             sections.append("User's clipboard:")
             sections.append(clipboardContext)
+        }
+
+        // Mid-word hint: when the caret is inside or at the end of a partial word, tell the model
+        // explicitly so it outputs only the remaining letters rather than the full word from scratch.
+        // A chat-tuned model otherwise treats "gre" as a complete context and outputs "grateful"
+        // instead of "ateful", which the seam guard then rejects as a misspelled join.
+        let caretIsMidWord = prefixText.last?.isLetter == true
+        if caretIsMidWord {
+            sections.append(contentsOf: [
+                "",
+                "The text ends in the middle of a word. Output only the remaining letters to finish "
+                    + "that word, then continue naturally. Do not restart the word from its beginning."
+            ])
         }
 
         sections.append(contentsOf: [
