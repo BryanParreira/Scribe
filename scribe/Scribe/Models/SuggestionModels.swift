@@ -197,8 +197,7 @@ struct SuggestionConfiguration: Equatable, Sendable {
         // Derived from the runtime constant so a context-window change can never silently
         // desynchronize the prompt budget from the KV capacity the model actually has.
         llamaPromptTokenBudget: SuggestionConfiguration.derivedLlamaPromptTokenBudget,
-        // Seed the profile settings with lightweight defaults on first launch.
-        defaultUserName: "Jacob",
+        defaultUserName: nil,
         defaultWordCountPreset: .twelveToTwenty,
         focusPollIntervalMilliseconds: 50
     )

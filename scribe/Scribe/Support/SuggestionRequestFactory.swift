@@ -28,7 +28,7 @@ enum SuggestionRequestFactory {
         return !trimmed.isEmpty
     }
 
-    /// Builds the generation request plus the exact prompt preview used by Jot's diagnostics UI.
+    /// Builds the generation request plus the exact prompt preview used by Scribe's diagnostics UI.
     static func buildRequest(
         context: FocusedInputContext,
         settings: SuggestionSettingsSnapshot,
@@ -81,7 +81,7 @@ enum SuggestionRequestFactory {
                 fieldPlaceholder: context.fieldPlaceholder
             )
             : nil
-        // Cotabby 2 is a base-model continuation product on the Open Source path, so the local
+        // Scribe is a base-model continuation product on the Open Source path, so the local
         // prompt is always the base render: no instruction blob, prefix last, trailing-trimmed.
         // Custom instructions and persona condition the output rather than being obeyed. The
         // Foundation Models path builds its own messages from these same request fields, so this
@@ -159,13 +159,15 @@ enum SuggestionRequestFactory {
         }
 
         let characterWindow = String(precedingText.suffix(maxCharacters))
-        let trailingWords = characterWindow
-            .split(whereSeparator: { $0.isWhitespace })
-            .suffix(maxWords)
-            .map(String.init)
-            .joined(separator: " ")
-
-        return trailingWords.isEmpty ? characterWindow : trailingWords
+        // Split to measure word count. SubStrings retain their indices into characterWindow,
+        // so we can slice the original string to preserve newlines, paragraph breaks, and
+        // multi-space runs rather than collapsing them all to single spaces.
+        let wordSubstrings = characterWindow.split(whereSeparator: { $0.isWhitespace })
+        guard wordSubstrings.count > maxWords else {
+            return characterWindow
+        }
+        let firstKept = wordSubstrings[wordSubstrings.count - maxWords]
+        return String(characterWindow[firstKept.startIndex...])
     }
 
     private static func activeUserName(
