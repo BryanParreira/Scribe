@@ -3,12 +3,12 @@ import Foundation
 /// Maintains a bounded ring buffer of recently accepted text phrases, persisted in UserDefaults.
 ///
 /// Accepted phrases are injected into the prompt as few-shot style examples so the model
-/// generates text that sounds like the specific user rather than generic prose. The buffer is
-/// small (5 entries) and only records phrases long enough to carry voice signal (≥3 words).
+/// generates text that sounds like the specific user rather than generic prose. The buffer keeps
+/// the 20 most recent entries so the model has a richer voice signal across longer sessions.
 final class RecentPhraseSampler {
     static let defaultsKey = "scribeRecentAcceptedPhrases"
-    private static let maxCount = 5
-    private static let minWordCount = 3
+    private static let maxCount = 20
+    private static let minWordCount = 2
     private static let maxPhraseCharacters = 120
 
     private var phrases: [String]

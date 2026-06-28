@@ -35,7 +35,10 @@ enum SuggestionRequestFactory {
         configuration: SuggestionConfiguration,
         clipboardContext: String? = nil,
         visualContextSummary: String? = nil,
-        recentAcceptedPhrases: [String] = []
+        recentAcceptedPhrases: [String] = [],
+        semanticPhrases: [String] = [],
+        styleProfileSummary: String? = nil,
+        appContextSummary: String? = nil
     ) -> SuggestionRequestBuildResult {
         let fieldType = FieldTypeClassifier.classify(
             role: context.role,
@@ -113,6 +116,9 @@ enum SuggestionRequestFactory {
             surfaceContext: surfaceContext,
             suffixText: activeSuffixText,
             recentPhrases: recentAcceptedPhrases,
+            semanticPhrases: semanticPhrases,
+            styleProfileSummary: styleProfileSummary,
+            appContextSummary: appContextSummary,
             tokenBudget: configuration.llamaPromptTokenBudget
         )
 
@@ -146,6 +152,9 @@ enum SuggestionRequestFactory {
             visualContextSummary: boundedVisualContextSummary,
             surfaceContext: surfaceContext,
             recentAcceptedPhrases: recentAcceptedPhrases,
+            semanticPhrases: semanticPhrases,
+            styleProfileSummary: styleProfileSummary,
+            appContextSummary: appContextSummary,
             isMultiLineEnabled: settings.isMultiLineEnabled,
             requestID: RequestID.generate()
         )

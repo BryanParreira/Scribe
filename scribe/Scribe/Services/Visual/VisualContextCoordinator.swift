@@ -1,5 +1,6 @@
 import Foundation
 import Logging
+import ApplicationServices
 
 /// File overview:
 /// Owns the screenshot-derived prompt-augmentation lifecycle for the currently focused input.
@@ -130,6 +131,18 @@ final class VisualContextCoordinator {
         publishState()
 
         guard hasPermission else {
+            return
+        }
+
+        // Fast path: for browser windows, read page text directly from the AX tree.
+        // This is synchronous, instant, and produces cleaner text than screenshot OCR
+        // because it reads actual DOM nodes rather than rendered pixels.
+        if AppSurfaceClassifier.classify(bundleIdentifier: snapshotContext.bundleIdentifier) == .browser,
+           let axElement = AXHelper.focusedElement(),
+           let webText = AXWebContentReader.readWebContent(nearElement: axElement) {
+            ScribeLogger.app.debug("AX web content read: \(webText.count) chars (skipping OCR)")
+            let excerpt = VisualContextExcerpt(text: webText)
+            applyExcerpt(excerpt, for: session.sessionID, identity: snapshotContext.identity)
             return
         }
 

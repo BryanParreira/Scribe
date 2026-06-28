@@ -30,6 +30,9 @@ enum BaseCompletionPromptRenderer {
         surfaceContext: SurfaceContext? = nil,
         suffixText: String? = nil,
         recentPhrases: [String] = [],
+        semanticPhrases: [String] = [],
+        styleProfileSummary: String? = nil,
+        appContextSummary: String? = nil,
         contextBudget: Int = defaultContextBudget,
         tokenBudget: Int? = nil
     ) -> String {
@@ -85,6 +88,29 @@ enum BaseCompletionPromptRenderer {
                     priority: 25,
                     maxChars: 280
                 )
+            )
+        }
+        // Observed style profile: sentence-length and register summary derived from all past
+        // acceptances. Priority 28 — above recent phrases so the model sees the macro pattern
+        // before individual examples.
+        if let styleProfile = Self.nonEmpty(styleProfileSummary) {
+            sections.append(
+                Self.contextSection("style_profile", "Observed style: \(styleProfile)", priority: 28, maxChars: 240)
+            )
+        }
+        // App-specific context: how this user typically writes in the current application.
+        // Priority 26 — just below style profile because it is narrower in scope.
+        if let appContext = Self.nonEmpty(appContextSummary) {
+            sections.append(
+                Self.contextSection("app_context", appContext, priority: 26, maxChars: 300)
+            )
+        }
+        // Semantically similar past phrases: topic-adjacent voice examples retrieved by word
+        // overlap. Listed separately from recency-based samples so the model gets both signals.
+        if !semanticPhrases.isEmpty {
+            let sample = semanticPhrases.prefix(3).map { "\"\($0)\"" }.joined(separator: ", ")
+            sections.append(
+                Self.contextSection("semantic_samples", "Related past writing: \(sample)", priority: 22, maxChars: 400)
             )
         }
         // Recent accepted phrases: few-shot voice conditioning. Injected last in the preface so a

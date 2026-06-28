@@ -515,6 +515,10 @@
 		B816C6191738AB616F2E8D2D /* SuggestionCoordinatorTestSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C174D8294858BF9DF3D361D /* SuggestionCoordinatorTestSupport.swift */; };
 		8CDDF19EF0204893BA2775F3 /* FieldTypeClassifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035E7D7532794A29AB458A5F /* FieldTypeClassifier.swift */; };
 		F08EF78070C845E5A4BD5F38 /* RecentPhraseSampler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DBFA66EDAC4F668587C9A0 /* RecentPhraseSampler.swift */; };
+		E3CFF49CA28A0C99B9169AA9 /* StyleProfileStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531B88B32E07F23F5B17799C /* StyleProfileStore.swift */; };
+		C7F69D3630DE206C29B9EA61 /* AppContextMemoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597AB8F51387B2BB35B6BC74 /* AppContextMemoryStore.swift */; };
+		6C4E67F290BA97119C58544C /* SemanticPhraseStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830C9104F62734244955C7AF /* SemanticPhraseStore.swift */; };
+		DB894654A60970020487EAB6 /* AXWebContentReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8C9E0EFEA0DE27B98759E2 /* AXWebContentReader.swift */; };
 		B849D68E0474CECAE809881C /* DebouncePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC17643448271DE5DE61A89 /* DebouncePolicy.swift */; };
 		B909A118616C0C47AAB6039A /* SpeculativeAcceptanceContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EB66904C35A7D8BEF5D2A5 /* SpeculativeAcceptanceContext.swift */; };
 		B93AB7E845086F6FBB068369 /* SuggestionRequestFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE94342B888A5A2CCF66BC93 /* SuggestionRequestFactoryTests.swift */; };
@@ -625,6 +629,10 @@
 		E38801433B99E65BD7E45A0E /* LlamaPromptCacheHintTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA88BB29BC8727878C99E95 /* LlamaPromptCacheHintTrackerTests.swift */; };
 		FBE0E39E8BD441EC917DAFD4 /* FieldTypeClassifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035E7D7532794A29AB458A5F /* FieldTypeClassifier.swift */; };
 		9C0A4B4A21D74F42A1B9EA85 /* RecentPhraseSampler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43DBFA66EDAC4F668587C9A0 /* RecentPhraseSampler.swift */; };
+		2F59E9074FDD26A2E1EFED17 /* StyleProfileStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531B88B32E07F23F5B17799C /* StyleProfileStore.swift */; };
+		DC035FBE5B3512402EDFE2B3 /* AppContextMemoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597AB8F51387B2BB35B6BC74 /* AppContextMemoryStore.swift */; };
+		0DE2B8F9C4FDF4F1DC8CBD04 /* SemanticPhraseStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830C9104F62734244955C7AF /* SemanticPhraseStore.swift */; };
+		4D3C8059C5F6FD40E0D91DDA /* AXWebContentReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC8C9E0EFEA0DE27B98759E2 /* AXWebContentReader.swift */; };
 		E3C0326597083762BA6D76CA /* DebouncePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC17643448271DE5DE61A89 /* DebouncePolicy.swift */; };
 		E3CAAEFAAB5BB24CEE16445B /* LLMIOFileHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D610FCA3A97249DCCE7D0B8 /* LLMIOFileHandler.swift */; };
 		E4382BEA8A8551612E5966B9 /* BaseCompletionPromptRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85EF79E6144D6C6AD062B569 /* BaseCompletionPromptRenderer.swift */; };
@@ -869,6 +877,10 @@
 		6DB982BF30B3601F57277776 /* fr-100k.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "fr-100k.txt"; sourceTree = "<group>"; };
 		035E7D7532794A29AB458A5F /* FieldTypeClassifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldTypeClassifier.swift; sourceTree = "<group>"; };
 		43DBFA66EDAC4F668587C9A0 /* RecentPhraseSampler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentPhraseSampler.swift; sourceTree = "<group>"; };
+		531B88B32E07F23F5B17799C /* StyleProfileStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleProfileStore.swift; sourceTree = "<group>"; };
+		597AB8F51387B2BB35B6BC74 /* AppContextMemoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppContextMemoryStore.swift; sourceTree = "<group>"; };
+		830C9104F62734244955C7AF /* SemanticPhraseStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SemanticPhraseStore.swift; sourceTree = "<group>"; };
+		DC8C9E0EFEA0DE27B98759E2 /* AXWebContentReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AXWebContentReader.swift; sourceTree = "<group>"; };
 		6DC17643448271DE5DE61A89 /* DebouncePolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebouncePolicy.swift; sourceTree = "<group>"; };
 		6DC693E00430F46E41CB56E6 /* RequestID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestID.swift; sourceTree = "<group>"; };
 		6E3B1232C4BE8072A5183F9C /* SymSpell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymSpell.swift; sourceTree = "<group>"; };
@@ -1735,6 +1747,10 @@
 				247561C626843957CFB4B632 /* CurrentWordExtractor.swift */,
 				035E7D7532794A29AB458A5F /* FieldTypeClassifier.swift */,
 				43DBFA66EDAC4F668587C9A0 /* RecentPhraseSampler.swift */,
+				531B88B32E07F23F5B17799C /* StyleProfileStore.swift */,
+				597AB8F51387B2BB35B6BC74 /* AppContextMemoryStore.swift */,
+				830C9104F62734244955C7AF /* SemanticPhraseStore.swift */,
+				DC8C9E0EFEA0DE27B98759E2 /* AXWebContentReader.swift */,
 				6DC17643448271DE5DE61A89 /* DebouncePolicy.swift */,
 				D12ABBCE23A946C22894945B /* DecodeStopPolicy.swift */,
 				29ED42C4BDD0C521101AF95E /* DeviceInfo.swift */,
@@ -2059,6 +2075,10 @@
 				E0DAB3CDE782C330AF21FC0D /* DateMacroEvaluator.swift in Sources */,
 				FBE0E39E8BD441EC917DAFD4 /* FieldTypeClassifier.swift in Sources */,
 				9C0A4B4A21D74F42A1B9EA85 /* RecentPhraseSampler.swift in Sources */,
+				2F59E9074FDD26A2E1EFED17 /* StyleProfileStore.swift in Sources */,
+				DC035FBE5B3512402EDFE2B3 /* AppContextMemoryStore.swift in Sources */,
+				0DE2B8F9C4FDF4F1DC8CBD04 /* SemanticPhraseStore.swift in Sources */,
+				4D3C8059C5F6FD40E0D91DDA /* AXWebContentReader.swift in Sources */,
 				E3C0326597083762BA6D76CA /* DebouncePolicy.swift in Sources */,
 				FA25762161F068F59BEC86EB /* DecodeStopPolicy.swift in Sources */,
 				400E1A5145FC8C5BA2FAED0A /* DeepGeometryWalkThrottle.swift in Sources */,
@@ -2308,6 +2328,10 @@
 				DAD77998F793468D4D64B705 /* DateMacroEvaluator.swift in Sources */,
 				8CDDF19EF0204893BA2775F3 /* FieldTypeClassifier.swift in Sources */,
 				F08EF78070C845E5A4BD5F38 /* RecentPhraseSampler.swift in Sources */,
+				E3CFF49CA28A0C99B9169AA9 /* StyleProfileStore.swift in Sources */,
+				C7F69D3630DE206C29B9EA61 /* AppContextMemoryStore.swift in Sources */,
+				6C4E67F290BA97119C58544C /* SemanticPhraseStore.swift in Sources */,
+				DB894654A60970020487EAB6 /* AXWebContentReader.swift in Sources */,
 				B849D68E0474CECAE809881C /* DebouncePolicy.swift in Sources */,
 				586B36CD813E1432D0AB1380 /* DecodeStopPolicy.swift in Sources */,
 				261FA692D19C48E53D6999BC /* DeepGeometryWalkThrottle.swift in Sources */,
@@ -2684,7 +2708,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -2697,7 +2721,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0.8;
+				MARKETING_VERSION = 1.0.9;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(COTABBY_DEV_BUNDLE_ID:default=com.bryanbernardo.jot.dev)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -2723,7 +2747,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -2736,7 +2760,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0.8;
+				MARKETING_VERSION = 1.0.9;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bryanbernardo.jot;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -2761,7 +2785,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -2774,7 +2798,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0.8;
+				MARKETING_VERSION = 1.0.9;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(COTABBY_DEV_BUNDLE_ID:default=com.bryanbernardo.jot.dev)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -2950,7 +2974,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -2963,7 +2987,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0.8;
+				MARKETING_VERSION = 1.0.9;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bryanbernardo.jot;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;

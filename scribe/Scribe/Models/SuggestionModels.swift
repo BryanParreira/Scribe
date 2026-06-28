@@ -388,6 +388,16 @@ struct SuggestionRequest: Equatable, Sendable {
     /// Recently accepted completion phrases for few-shot style conditioning.
     /// Injected into the llama prompt preface so the model generates text that sounds like this user.
     let recentAcceptedPhrases: [String]
+    /// Past accepted phrases retrieved by semantic (word-overlap) similarity to the current prefix.
+    /// These are topic-adjacent rather than purely recent, giving the model richer voice signal when
+    /// the user returns to a familiar subject.
+    let semanticPhrases: [String]
+    /// Natural-language summary of the user's observed writing style (sentence length, register,
+    /// frequent vocabulary), derived by `StyleProfileStore` from accumulated acceptances.
+    let styleProfileSummary: String?
+    /// Short description of how the user typically writes in the current application, derived by
+    /// `AppContextMemoryStore` from per-app acceptance history.
+    let appContextSummary: String?
     /// When enabled, the normalizer keeps multiple lines instead of truncating to the first line.
     let isMultiLineEnabled: Bool
     /// Correlation ID stamped onto every log line touching this request — coordinator state
@@ -418,6 +428,9 @@ struct SuggestionRequest: Equatable, Sendable {
         visualContextSummary: String?,
         surfaceContext: SurfaceContext? = nil,
         recentAcceptedPhrases: [String] = [],
+        semanticPhrases: [String] = [],
+        styleProfileSummary: String? = nil,
+        appContextSummary: String? = nil,
         isMultiLineEnabled: Bool,
         requestID: String = "req_unknown"
     ) {
@@ -442,6 +455,9 @@ struct SuggestionRequest: Equatable, Sendable {
         self.visualContextSummary = visualContextSummary
         self.surfaceContext = surfaceContext
         self.recentAcceptedPhrases = recentAcceptedPhrases
+        self.semanticPhrases = semanticPhrases
+        self.styleProfileSummary = styleProfileSummary
+        self.appContextSummary = appContextSummary
         self.isMultiLineEnabled = isMultiLineEnabled
         self.requestID = requestID
     }

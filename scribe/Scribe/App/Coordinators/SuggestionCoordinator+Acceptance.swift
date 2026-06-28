@@ -127,6 +127,11 @@ extension SuggestionCoordinator {
         deferAcceptanceBookkeeping { [weak self] in
             self?.recordAcceptedWords(from: acceptedChunk)
             self?.recentPhraseSampler.record(acceptedChunk)
+            self?.styleProfileStore.record(acceptedChunk)
+            self?.semanticPhraseStore.record(acceptedChunk)
+            if let bundleID = self?.focusModel.snapshot.context?.bundleIdentifier {
+                self?.appContextMemoryStore.record(acceptedChunk, bundleIdentifier: bundleID)
+            }
             self?.recordSuggestionAcceptedIfFirstChunk(of: sessionForAcceptance)
         }
 

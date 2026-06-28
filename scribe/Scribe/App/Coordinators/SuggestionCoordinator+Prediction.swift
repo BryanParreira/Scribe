@@ -113,13 +113,20 @@ extension SuggestionCoordinator {
             ? visualContextCoordinator.excerpt(for: context)
             : nil
         let clipboardContext = pinnedClipboardContext(rawContext: rawContext)
+        let semanticPhrases = semanticPhraseStore.retrieve(similarTo: context.precedingText)
         let requestBuildResult = SuggestionRequestFactory.buildRequest(
             context: context,
             settings: settingsSnapshot,
             configuration: configuration,
             clipboardContext: clipboardContext,
             visualContextSummary: visualContextSummary,
-            recentAcceptedPhrases: recentPhraseSampler.recentPhrases
+            recentAcceptedPhrases: recentPhraseSampler.recentPhrases,
+            semanticPhrases: semanticPhrases,
+            styleProfileSummary: styleProfileStore.styleProfileSummary(),
+            appContextSummary: appContextMemoryStore.context(
+                for: context.bundleIdentifier,
+                appName: context.applicationName
+            )
         )
         latestGenerationNumber = context.generation
         latestPromptPreview = requestBuildResult.promptPreview
@@ -234,13 +241,20 @@ extension SuggestionCoordinator {
         // the prompt head mid-session, breaking prompt-byte continuity with the ordinary cycle
         // (and the llama KV prefix reuse that depends on it).
         let clipboardContext = pinnedClipboardContext(rawContext: optimistic)
+        let semanticPhrases = semanticPhraseStore.retrieve(similarTo: context.precedingText)
         let requestBuildResult = SuggestionRequestFactory.buildRequest(
             context: context,
             settings: settingsSnapshot,
             configuration: configuration,
             clipboardContext: clipboardContext,
             visualContextSummary: visualContextSummary,
-            recentAcceptedPhrases: recentPhraseSampler.recentPhrases
+            recentAcceptedPhrases: recentPhraseSampler.recentPhrases,
+            semanticPhrases: semanticPhrases,
+            styleProfileSummary: styleProfileStore.styleProfileSummary(),
+            appContextSummary: appContextMemoryStore.context(
+                for: context.bundleIdentifier,
+                appName: context.applicationName
+            )
         )
         latestGenerationNumber = context.generation
         latestPromptPreview = requestBuildResult.promptPreview
