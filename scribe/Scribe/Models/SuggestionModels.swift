@@ -398,6 +398,9 @@ struct SuggestionRequest: Equatable, Sendable {
     /// Short description of how the user typically writes in the current application, derived by
     /// `AppContextMemoryStore` from per-app acceptance history.
     let appContextSummary: String?
+    /// Time-of-day bucket (morning / afternoon / evening / night) sampled when the request is built.
+    /// Helps the model lean toward the register typical for that time of day.
+    let timeOfDayHint: String?
     /// When enabled, the normalizer keeps multiple lines instead of truncating to the first line.
     let isMultiLineEnabled: Bool
     /// Correlation ID stamped onto every log line touching this request — coordinator state
@@ -431,6 +434,7 @@ struct SuggestionRequest: Equatable, Sendable {
         semanticPhrases: [String] = [],
         styleProfileSummary: String? = nil,
         appContextSummary: String? = nil,
+        timeOfDayHint: String? = nil,
         isMultiLineEnabled: Bool,
         requestID: String = "req_unknown"
     ) {
@@ -458,6 +462,7 @@ struct SuggestionRequest: Equatable, Sendable {
         self.semanticPhrases = semanticPhrases
         self.styleProfileSummary = styleProfileSummary
         self.appContextSummary = appContextSummary
+        self.timeOfDayHint = timeOfDayHint
         self.isMultiLineEnabled = isMultiLineEnabled
         self.requestID = requestID
     }

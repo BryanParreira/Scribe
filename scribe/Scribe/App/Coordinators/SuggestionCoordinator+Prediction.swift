@@ -613,6 +613,7 @@ extension SuggestionCoordinator {
             isRightToLeft: TextDirectionDetector.isRightToLeft(liveContext.precedingText),
             isCorrection: true
         )
+        spotlightController.showIfNeeded(.typoCorrection, near: liveContext.caretRect)
         logStage(
             "typo-correction-ready",
             workID: workID,

@@ -262,6 +262,9 @@ final class ScribeAppEnvironment {
         suggestionCoordinator.emojiInputObserver = { [weak inlineCommandCoordinator] event in
             inlineCommandCoordinator?.observe(event) ?? false
         }
+        emojiPickerController.onFirstPanelShow = { [weak suggestionCoordinator] caretRect in
+            suggestionCoordinator?.spotlightController.showIfNeeded(.emojiShortcode, near: caretRect)
+        }
 
         self.permissionManager = permissionManager
         self.runtimeModel = runtimeModel

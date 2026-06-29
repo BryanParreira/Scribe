@@ -309,7 +309,7 @@ final class FoundationModelSuggestionEngine {
         case .guardrailViolation:
             return .generationFailed("Apple Intelligence rejected this request because of model guardrails.")
         case .unsupportedGuide:
-            return .generationFailed("Apple Intelligence rejected a guided-generation request Jot sent.")
+            return .generationFailed("Apple Intelligence rejected a guided-generation request Scribe sent.")
         case .decodingFailure:
             return .generationFailed("Apple Intelligence returned a response Scribe could not decode.")
         case .rateLimited:

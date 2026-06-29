@@ -61,6 +61,12 @@ final class OverlayController: SuggestionOverlayControlling {
     /// text from ballooning when the fallback wins. See `GhostFontSizeStabilizer`.
     private var ghostFontStabilizer = GhostFontSizeStabilizer()
 
+    /// Auto-fade: dims the ghost text after a period of user inactivity so it is less visually
+    /// distracting when the user has paused to think. Reset on every new suggestion; cancelled on hide.
+    private var idleFadeWorkItem: DispatchWorkItem?
+    private static let idleFadeDelay: TimeInterval = 4.0
+    private static let idleFadeAlpha: CGFloat = 0.25
+
     /// The font and size the inline ghost was last rendered with, captured so `advanceInline` can
     /// measure the handed-off prefix in exactly the rendered typeface. Nil until the first inline show.
     private var lastInlineRenderFont: NSFont?
@@ -151,6 +157,7 @@ final class OverlayController: SuggestionOverlayControlling {
 
     /// Hides the floating panel and records why the overlay is no longer visible.
     func hide(reason: String) {
+        cancelIdleFade()
         panel.orderOut(nil)
         state = .hidden(reason: reason)
     }
@@ -173,6 +180,28 @@ final class OverlayController: SuggestionOverlayControlling {
             context.timingFunction = CAMediaTimingFunction(name: .easeOut)
             panel.animator().alphaValue = 1
         }
+        scheduleIdleFade()
+    }
+
+    /// Starts (or restarts) the inactivity timer. Fires after `idleFadeDelay` seconds if no new
+    /// suggestion arrives, gently dimming the overlay so it stops competing for the user's attention.
+    private func scheduleIdleFade() {
+        cancelIdleFade()
+        let item = DispatchWorkItem { [weak self] in
+            guard let self, self.state.isVisible else { return }
+            NSAnimationContext.runAnimationGroup { context in
+                context.duration = 0.6
+                context.timingFunction = CAMediaTimingFunction(name: .easeIn)
+                self.panel.animator().alphaValue = Self.idleFadeAlpha
+            }
+        }
+        idleFadeWorkItem = item
+        DispatchQueue.main.asyncAfter(deadline: .now() + Self.idleFadeDelay, execute: item)
+    }
+
+    private func cancelIdleFade() {
+        idleFadeWorkItem?.cancel()
+        idleFadeWorkItem = nil
     }
 
     /// Inline ghost text drawn next to the caret. This is the original rendering path; the body

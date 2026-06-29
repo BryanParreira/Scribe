@@ -176,12 +176,17 @@ final class SuggestionCoordinator: ObservableObject {
     /// Ring buffer of recently accepted completion phrases, persisted across sessions.
     /// Injected into the prompt as few-shot style conditioning (see `RecentPhraseSampler`).
     var recentPhraseSampler: RecentPhraseSampler
+    /// Manages one-time contextual hints that teach users about Tab acceptance, typo fix, and emoji.
+    let spotlightController: FeatureSpotlightController
     /// Learns the user's writing style (sentence length, register) from accepted phrases.
     var styleProfileStore: StyleProfileStore
     /// Remembers accepted phrases per application for app-specific voice conditioning.
     var appContextMemoryStore: AppContextMemoryStore
     /// Retrieves past accepted phrases semantically similar to the current typing context.
     var semanticPhraseStore: SemanticPhraseStore
+    /// Tracks which suggestion prefixes the user repeatedly dismisses, buffered to avoid disk I/O
+    /// on the keystroke path. Flushes at most once per minute.
+    var rejectionPatternStore: RejectionPatternStore
 
     init(
         permissionManager: any SuggestionPermissionProviding,
@@ -225,9 +230,11 @@ final class SuggestionCoordinator: ObservableObject {
         self.qualityMetricsStore = qualityMetricsStore
         self.userDefaults = userDefaults
         recentPhraseSampler = RecentPhraseSampler(userDefaults: userDefaults)
+        spotlightController = FeatureSpotlightController(store: FeatureSpotlightStore(userDefaults: userDefaults))
         styleProfileStore = StyleProfileStore(userDefaults: userDefaults)
         appContextMemoryStore = AppContextMemoryStore(userDefaults: userDefaults)
         semanticPhraseStore = SemanticPhraseStore(userDefaults: userDefaults)
+        rejectionPatternStore = RejectionPatternStore(userDefaults: userDefaults)
         settingsSnapshot = suggestionSettings.snapshot
         // These collaborators isolate "how overlay/logging works" from "when the coordinator
         // wants to show state," which keeps the coordinator closer to orchestration code.

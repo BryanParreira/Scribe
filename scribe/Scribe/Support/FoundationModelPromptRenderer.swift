@@ -166,6 +166,9 @@ enum FoundationModelPromptRenderer {
         // Personalization context injected BEFORE the caret text so the model treats these as
         // background facts rather than text to continue from. Placing examples after the prefix
         // caused the chat-tuned model to treat the last example as the active document.
+        if let tod = request.timeOfDayHint, !tod.isEmpty {
+            sections.append(contentsOf: ["", "Time of day: \(tod)."])
+        }
         if let styleProfile = request.styleProfileSummary, !styleProfile.isEmpty {
             sections.append(contentsOf: ["", "Observed writing style of this user:", styleProfile])
         }

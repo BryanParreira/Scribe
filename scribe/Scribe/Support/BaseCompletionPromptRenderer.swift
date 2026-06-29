@@ -33,6 +33,7 @@ enum BaseCompletionPromptRenderer {
         semanticPhrases: [String] = [],
         styleProfileSummary: String? = nil,
         appContextSummary: String? = nil,
+        timeOfDayHint: String? = nil,
         contextBudget: Int = defaultContextBudget,
         tokenBudget: Int? = nil
     ) -> String {
@@ -88,6 +89,13 @@ enum BaseCompletionPromptRenderer {
                     priority: 25,
                     maxChars: 280
                 )
+            )
+        }
+        // Time-of-day: a single word (morning/afternoon/evening/night) that nudges the model toward
+        // the register typical for that time. Very cheap — one token, stable across keystrokes.
+        if let tod = timeOfDayHint, !tod.isEmpty {
+            sections.append(
+                Self.contextSection("time_of_day", "Time of day: \(tod)", priority: 29, maxChars: 30)
             )
         }
         // Observed style profile: sentence-length and register summary derived from all past

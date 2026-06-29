@@ -772,6 +772,8 @@ extension SuggestionCoordinator {
         ) {
             latestOverlayMessage = message
         }
+        // Fire the first-use spotlight the first time any suggestion appears.
+        spotlightController.showIfNeeded(.tabAcceptance, near: geometry.caretRect)
     }
 
     /// Repairs untrustworthy caret anchors with a hidden-text-layout estimate before presentation.
@@ -980,6 +982,11 @@ extension SuggestionCoordinator {
     }
 
     func hideOverlay(reason: String) {
+        // Record dismissal before hiding. If the overlay was visible (suggestion was showing) and
+        // the user didn't accept it, that's a rejection signal. Buffer-only — no disk I/O here.
+        if case .visible(let text, _, _) = overlayState {
+            rejectionPatternStore.recordDismissal(of: text)
+        }
         latestOverlayMessage = overlayPresenter.hide(reason: reason)
     }
 

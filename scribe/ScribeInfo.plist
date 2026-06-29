@@ -31,9 +31,9 @@
 	<key>SUEnableAutomaticChecks</key>
 	<true/>
 	<key>SUFeedURL</key>
-	<string></string>
+	<string>https://raw.githubusercontent.com/BryanParreira/Scribe/main/appcast.xml</string>
 	<key>SUPublicEDKey</key>
-	<string>efJeZNfUISOs6npbxI2MLLe7sBB5tT/sVnTk9t/qBSY=</string>
+	<string>9WPUTGR5giyjnFR/lv8/V0of5NqDWdUkzuf0IIHM7eE=</string>
 	<key>SUScheduledCheckInterval</key>
 	<integer>86400</integer>
 </dict>

@@ -38,7 +38,8 @@ enum SuggestionRequestFactory {
         recentAcceptedPhrases: [String] = [],
         semanticPhrases: [String] = [],
         styleProfileSummary: String? = nil,
-        appContextSummary: String? = nil
+        appContextSummary: String? = nil,
+        timeOfDayHint: String? = TimeOfDayContext.current()
     ) -> SuggestionRequestBuildResult {
         let fieldType = FieldTypeClassifier.classify(
             role: context.role,
@@ -119,6 +120,7 @@ enum SuggestionRequestFactory {
             semanticPhrases: semanticPhrases,
             styleProfileSummary: styleProfileSummary,
             appContextSummary: appContextSummary,
+            timeOfDayHint: timeOfDayHint,
             tokenBudget: configuration.llamaPromptTokenBudget
         )
 
@@ -155,6 +157,7 @@ enum SuggestionRequestFactory {
             semanticPhrases: semanticPhrases,
             styleProfileSummary: styleProfileSummary,
             appContextSummary: appContextSummary,
+            timeOfDayHint: timeOfDayHint,
             isMultiLineEnabled: settings.isMultiLineEnabled,
             requestID: RequestID.generate()
         )

@@ -64,6 +64,9 @@ final class EmojiPickerController {
     /// change, long pause, click-away), so the coordinator can recompute tap interception. The
     /// coordinator, not this controller, owns the input monitor's single interception flag.
     var onCaptureStateChanged: (() -> Void)?
+    /// Fires once the first time the emoji panel is shown; passes the caret rect so the caller can
+    /// position a feature spotlight near the panel. Cleared after it fires so subsequent shows skip it.
+    var onFirstPanelShow: ((CGRect) -> Void)?
 
     /// The consume decision `observe(_:)` computed for one key, read back by `decideCaptureKey(_:)`
     /// during the same event. The key code guards against a stale decision being applied to a later
@@ -354,6 +357,10 @@ final class EmojiPickerController {
             caretRect: caretRect,
             acceptKeyLabel: acceptKeyLabel()
         )
+        if let callback = onFirstPanelShow {
+            onFirstPanelShow = nil
+            callback(caretRect)
+        }
     }
 
     private func bestMatchForClosingColon(query: String) -> EmojiMatch? {
