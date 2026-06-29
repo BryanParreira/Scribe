@@ -25,6 +25,9 @@ struct GhostSuggestionLayout: Equatable {
     let lineHeight: CGFloat
     let topLineCenterOffsetFromCaret: CGFloat
     let isRightToLeft: Bool
+    /// The usable screen region (menu bar and Dock excluded). `panelFrame` clamps the panel
+    /// origin into this rect so the overlay never escapes the visible display area.
+    let visibleFrame: CGRect
 
     private enum Metrics {
         static let caretGap: CGFloat = 6
@@ -108,7 +111,8 @@ struct GhostSuggestionLayout: Equatable {
                 panelOriginX: firstLineAnchor,
                 lineHeight: lineHeight,
                 topLineCenterOffsetFromCaret: 0,
-                isRightToLeft: isRTL
+                isRightToLeft: isRTL,
+                visibleFrame: visibleFrame
             )
         }
 
@@ -174,17 +178,23 @@ struct GhostSuggestionLayout: Equatable {
             panelOriginX: panelOriginX,
             lineHeight: lineHeight,
             topLineCenterOffsetFromCaret: startsBelowCaret ? -lineHeight : 0,
-            isRightToLeft: isRTL
+            isRightToLeft: isRTL,
+            visibleFrame: visibleFrame
         )
     }
 
     func panelFrame(for contentSize: CGSize, caretRect: CGRect) -> CGRect {
         let topLineCenterY = caretRect.midY + topLineCenterOffsetFromCaret
-        let originY = topLineCenterY - contentSize.height + (lineHeight / 2)
+        let rawOriginY = topLineCenterY - contentSize.height + (lineHeight / 2)
+        // Clamp vertically so the panel never drifts below the Dock or above the menu bar.
+        let clampedOriginY = min(
+            max(rawOriginY, visibleFrame.minY),
+            visibleFrame.maxY - contentSize.height
+        )
         let originX = isRightToLeft ? panelOriginX - contentSize.width : panelOriginX
 
         return CGRect(
-            origin: CGPoint(x: originX, y: originY),
+            origin: CGPoint(x: originX, y: clampedOriginY),
             size: contentSize
         )
     }

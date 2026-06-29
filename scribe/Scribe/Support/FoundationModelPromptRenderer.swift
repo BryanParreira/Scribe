@@ -163,6 +163,21 @@ enum FoundationModelPromptRenderer {
             ])
         }
 
+        // Personalization context injected BEFORE the caret text so the model treats these as
+        // background facts rather than text to continue from. Placing examples after the prefix
+        // caused the chat-tuned model to treat the last example as the active document.
+        if let styleProfile = request.styleProfileSummary, !styleProfile.isEmpty {
+            sections.append(contentsOf: ["", "Observed writing style of this user:", styleProfile])
+        }
+        if let appContext = request.appContextSummary, !appContext.isEmpty {
+            sections.append(contentsOf: ["", appContext])
+        }
+        let allPhrases = Array((request.semanticPhrases + request.recentAcceptedPhrases).prefix(3))
+        if !allPhrases.isEmpty {
+            let sample = allPhrases.map { "\"\($0)\"" }.joined(separator: ", ")
+            sections.append(contentsOf: ["", "Examples of how this user writes (for tone reference only, do not continue these): \(sample)"])
+        }
+
         sections.append(contentsOf: [
             "",
             "Text before the caret:",
@@ -181,23 +196,6 @@ enum FoundationModelPromptRenderer {
                 "Text after the caret:",
                 trailing
             ])
-        }
-
-        // Personalization context: style profile, app-specific history, and semantically similar
-        // past phrases. These ride in the per-request prompt (not the cached instructions) so they
-        // can vary across apps and topics without invalidating the shared instruction prefix.
-        if let styleProfile = request.styleProfileSummary, !styleProfile.isEmpty {
-            sections.append(contentsOf: ["", "Observed writing style:", styleProfile])
-        }
-        if let appContext = request.appContextSummary, !appContext.isEmpty {
-            sections.append(contentsOf: ["", appContext])
-        }
-        let allPhrases = (request.semanticPhrases + request.recentAcceptedPhrases)
-            .prefix(4)
-            .map { Array($0) }
-        if !allPhrases.isEmpty {
-            let sample = allPhrases.map { "\"\(String($0))\"" }.joined(separator: ", ")
-            sections.append(contentsOf: ["", "Examples of this user's writing: \(sample)"])
         }
 
         // Length cue is reintroduced on the FM prompt channel (not instructions). Apple's model

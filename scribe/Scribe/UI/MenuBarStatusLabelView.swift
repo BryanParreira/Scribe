@@ -16,6 +16,6 @@ struct MenuBarStatusLabelView: View {
             .renderingMode(.template)
             .resizable()
             .scaledToFit()
-            .frame(height: 16)
+            .frame(height: 20)
     }
 }
